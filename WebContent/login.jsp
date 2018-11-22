@@ -6,6 +6,7 @@
 <meta charset="ISO-8859-1">
 
 
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -48,7 +49,6 @@
     	<button type="submit" class="btn btn-default" >Register</button>
     </form>
     
-    
-    
-</body>
+   </body> 
+
 </html>

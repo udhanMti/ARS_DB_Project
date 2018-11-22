@@ -39,12 +39,12 @@ public class DBoperation {
     	
     	try {
     		   
-			con = (Connection)DriverManager.getConnection(url, username, password);
+			Connection con = (Connection)DriverManager.getConnection(url, username, password);
 			String query= "Select schedule_id,date,flight_id,booked_seats_business+booked_seats_platinum+booked_seats_econ from schedule where date<=Date(Now()) and flight_id in (Select flight_id from flight inner join route using(route_id) where from_port_id=? and to_port_id=?)";
-	        pst =(PreparedStatement)con.prepareStatement(query);
+	        PreparedStatement pst =(PreparedStatement)con.prepareStatement(query);
 	        pst.setString(1, from_port_id);
 	        pst.setString(2, to_port_id);
-	        rs=pst.executeQuery();
+	        ResultSet rs=pst.executeQuery();
 	        
 	     
 	        while(rs.next()) {
@@ -56,7 +56,7 @@ public class DBoperation {
                  pf.setPassenger_count(rs.getString(4));
                  past_flights.add(pf);
 	        }
-	        
+	        con.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
