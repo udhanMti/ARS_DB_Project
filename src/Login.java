@@ -1,5 +1,6 @@
 
 
+import java.io.Console;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,16 +17,23 @@ public class Login extends HttpServlet {
 	DBoperation db= new DBoperation();
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  String username=request.getParameter("username");
-		  String password=request.getParameter("pw");
+		  String password=request.getParameter("password");
 		  
 		  HttpSession session=request.getSession();
-		  Boolean isValid=db.check_for_admin_user(username, password);
 		  
-		  if(isValid) {
-			  session.setAttribute("username", username);
-			  response.sendRedirect("admin_home.jsp");
-		  }else {
+		  String category=db.check_for_user(username, password);
+		
+		  if(category==null) {
 			  response.sendRedirect("login.jsp"); 
+			  
+		  }else{ 
+			  session.setAttribute("username", username);
+			  session.setAttribute("category", category);
+			  if(category.equals("Admin")){	  
+			      response.sendRedirect("admin_home.jsp");
+		      }else {
+		    	  response.sendRedirect("user_home.jsp");
+		      }		   
 		  }		 
 	}
 }
