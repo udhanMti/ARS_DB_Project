@@ -4,19 +4,79 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <title>Register</title>
 </head>
 <body>
+
+	<div class="page-header">
+    <h2>AirLine System</h2>      
+    </div>
+    
+    
+    <h5>Register</h5>
+    
 	<form action="register" method="post">
-		Firstname :<input type="text" name="fname"><br>
-        Lastname :<input type="text" name="lname"><br>
-        Email :<input type="text" name="email"><br>
-        Phone number :<input type="text" name="phonenumber"><br>
-        Address :<input type="text" name="address"><br>
-        Age :<input type="text" name="age"><br>
-        Username :<input type="text" name="username"><br>
-        Password :<input type="password" name="pw"><br>
-        <input type="submit" >
+		
+        
+        <div class="form-group">
+	    	<label for="fname" >First name :</label>
+	    	<input type="text" class="form-control" id="fname" name="fname">
+	    </div>
+	    
+	    <div class="form-group">
+	    	<label for="lname" >Last name :</label>
+	    	<input type="text" class="form-control" id="lname" name="lname">
+	    </div>
+	    
+	    <div class="form-group">
+	    	<label for="email" >Email :</label>
+	    	<input type="text" class="form-control" id="email" name="email">
+	    </div>
+	    
+	    <div class="form-group">
+	    	<label for="phonenumber" >Phone number :</label>
+	    	<input type="text" class="form-control" id="phonenumber" name="phonenumber">
+	    </div>
+	    
+	    <div class="form-group">
+	    	<label for="address" >Address :</label>
+	    	<input type="text" class="form-control" id="address" name="address">
+	    </div>
+	    
+	    <div class="form-group">
+	    	<label for="age" >Age :</label>
+	    	<input type="text" class="form-control" id="age" name="age">
+	    </div>
+	    
+	    <div class="form-group">
+	    	<label for="email" >Username:</label>
+	    	<input type="text" class="form-control" id="email" name="username">
+	    </div>
+	    
+		  <div class="form-group">
+		    <label for="pwd">Password:</label>
+		    <input type="password" class="form-control" id="pwd" name="pw">
+		  </div>
+		  
+		  
+	  	<button type="submit" class="btn btn-default">Register</button>
+	    
+	    
+        
     </form>
+    
+    
 </body>
 </html>

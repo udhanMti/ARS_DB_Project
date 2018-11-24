@@ -32,7 +32,7 @@ public class Register  extends HttpServlet{
 	        em.setAddress(address);
 	        em.setPhonenumber(phonenumber);
 	        em.setAge(Integer.parseInt(age));
-	        em.setUser_category_id("c1");
+	        em.setUser_category_id("2");
 	        
 	        int x = db.checkforuser(em);
 	        

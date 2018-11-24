@@ -24,7 +24,7 @@ public class Login extends HttpServlet {
 		  
 		  HttpSession session=request.getSession();
 		  System.out.println("in login class");
-		  Boolean isValid=db.check_for_admin_user(username, password);
+		  Boolean isValid=db.checkforuser(username, password);
 		  
 		  if(isValid) {
 			  session.setAttribute("username", username);

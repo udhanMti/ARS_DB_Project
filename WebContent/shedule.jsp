@@ -8,11 +8,24 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
+
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <title>Insert title here</title>
 </head>
 <body>
   <h3>Shedule Table</h3>
-  <table>
+  <form action="price" method="post">
+  <table class="table table-bordered" >
   <tr>
   	<th>Date</th>
   	<th>Airline</th>
@@ -31,9 +44,15 @@
      <td>${s.to}</td> 
      <td>${s.sheduled_time}</td>
      <td>${s.delay_time}</td>
+     <td align="center">  
+        <input type="radio" name="checkboxgroup"   value="${s.sheduleid}"/>  
+     </td>
      </tr>
   </c:forEach>
   
   </table>
+  <input type="submit" class="btn btn-default" name="button1" value="View Price" />
+  <input type="submit" class="btn btn-default" name="button2" value="Book Seat" />
+  </form>
 </body>
 </html>

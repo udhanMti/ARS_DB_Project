@@ -34,6 +34,30 @@ public class DBoperation {
     	return false;
     }
     
+    
+    public boolean checkforuser(String uname,String pw) {
+    	try {
+    		System.out.println("in db operation class");
+			con = (Connection)DriverManager.getConnection(url, username, password);
+			String query= "select * from user where username=? and password=?";
+	        pst =(PreparedStatement)con.prepareStatement(query);
+	        pst.setString(1, uname);
+	        pst.setString(2, pw);
+	        rs=pst.executeQuery();
+	    
+	        while(rs.next()) {
+	        	return true;
+	        }
+	        
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+			e.printStackTrace();
+		}
+        
+    	return false;
+    }
+    
     public ArrayList<PastFlight> getScheduleHistory(String from_port_id,String to_port_id) {
     	ArrayList<PastFlight> past_flights=new ArrayList<>();
     	
@@ -70,9 +94,9 @@ public class DBoperation {
     public boolean addUser(user em){
         System.out.println(em.getFirstname()+" "+em.getFirstname().length());
         try{
-            //System.out.println("sdfsdf1");
+           
             con = (Connection)DriverManager.getConnection(url, username, password);
-            // System.out.println("sdfsdf");
+            
             String query= "INSERT INTO user values (?,?,?,?,?,?,?,?,?,?)";
             pst =(PreparedStatement)con.prepareStatement(query);
             
@@ -204,4 +228,87 @@ public class DBoperation {
         
     
     }
+ 
+ 
+ Price getPrices(String sheduleid){
+    
+     try{
+         Price em=new Price();
+         con = (Connection)DriverManager.getConnection(url, username, password);
+        
+         String query= "select econ_price,business_price,platinum_price from schedule left join price using(price_id) where schedule_id="+sheduleid;
+         pst =(PreparedStatement)con.prepareStatement(query);
+        // pst.setString(1,ss.getSheduleid());
+         
+         rs = pst.executeQuery();
+         
+         while(rs.next()){
+             
+             
+             em.setEcon_price(rs.getFloat(1));
+             em.setBusiness_price(rs.getFloat(2));
+             em.setPlatinum_price(rs.getFloat(3));
+             
+             
+         }
+         
+         return em;
+         
+     }catch(Exception e){
+         System.out.println(e);
+         return null;
+        
+     }finally{
+         try{
+             if(pst != null){
+                 pst.close();
+             }
+             if (con != null){
+                 con.close();
+             }
+         }catch(Exception e){
+         
+         }
+     }
+ }
+ 
+ double getDiscount(String uname) {
+	 try{
+         
+         con = (Connection)DriverManager.getConnection(url, username, password);
+        
+         String query= "select discount from user left join user_category on user.user_category_id=user_category.category_id where username="+uname;
+         pst =(PreparedStatement)con.prepareStatement(query);
+        // pst.setString(1,ss.getSheduleid());
+         
+         rs = pst.executeQuery();
+         
+         double discount=0.5;
+         
+         while(rs.next()){
+             discount= Double.parseDouble(rs.getString(1));
+         }
+         
+         return discount;
+         
+     }catch(Exception e){
+         System.out.println(e);
+         return 0.5;
+        
+     }finally{
+         try{
+             if(pst != null){
+                 pst.close();
+             }
+             if (con != null){
+                 con.close();
+             }
+         }catch(Exception e){
+         
+         }
+     }
+	 
+ }
+ 
+ 
 }
