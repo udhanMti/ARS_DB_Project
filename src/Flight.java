@@ -1,5 +1,9 @@
+<<<<<<< HEAD:src/Flight.java
 
 public class Flight {
+=======
+public class PastFlight {
+>>>>>>> 67e1b920000f044d2555bfb8e95bebce39465e2d:src/PastFlight.java
 	private String flight_id;
     private String schedule_id;
     private String passenger_count;
