@@ -18,25 +18,55 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/login")
 public class Login extends HttpServlet {
 	DBoperation db= new DBoperation();
+	
+	public static String error;
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  String username=request.getParameter("username");
 		  String password=request.getParameter("pw");
 		  
 		  HttpSession session=request.getSession();
-		  System.out.println("in login class");
-		  Boolean isValid=db.checkforuser(username, password);
 		  
-		  if(isValid) {
-			  session.setAttribute("username", username);
+		  
+		  error="";
+		  
+		  if (request.getParameter("button1") != null) {
+			  Boolean isValid=db.checkforuserlogin(username, password);
 			  
-			  ArrayList<Shedule> list= db.getShedule();
-			  session.setAttribute("shedule",list);
-			  response.sendRedirect("shedule.jsp" );
-			  
-			  
+			  if(isValid) {
+				  session.setAttribute("username", username);
+				  
+				  ArrayList<Shedule> list= db.getShedule();
+				  session.setAttribute("shedule",list);
+				  Login.error="";
+				  response.sendRedirect("shedule.jsp" );
+				  
+				  
+				  
+			  }else {
+				  request.setAttribute("error", error);
+		          request.getRequestDispatcher("login.jsp").forward(request, response); 
+			  }	
 			  
 		  }else {
-			  response.sendRedirect("login.jsp"); 
-		  }		 
+			  Boolean isValid=db.checkforadminlogin(username, password);
+			  
+			  if(isValid) {
+				  session.setAttribute("username", username);
+				  
+				  
+				  Login.error="";
+				  response.sendRedirect("admin_home.jsp" );
+				  
+				  
+				  
+			  }else {
+				  request.setAttribute("error", error);
+		          request.getRequestDispatcher("login.jsp").forward(request, response); 
+			  }	
+			  
+		  }
+		  
+		  	 
 	}
 }

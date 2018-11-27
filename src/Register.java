@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 
 public class Register  extends HttpServlet{
 	DBoperation db= new DBoperation();
+	public static String error;
+	
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  String fname=request.getParameter("fname");
 		  String lname=request.getParameter("lname");
@@ -31,25 +34,30 @@ public class Register  extends HttpServlet{
 	        em.setEmail(email);
 	        em.setAddress(address);
 	        em.setPhonenumber(phonenumber);
+	        if(age.length()==0) {
+	        	age="200";
+	        }
 	        em.setAge(Integer.parseInt(age));
 	        em.setUser_category_id("2");
+	        error="";
 	        
 	        int x = db.checkforuser(em);
 	        
 	        if(x==0){
 	            boolean result = db.addUser(em);
+            	request.setAttribute("error", error);
 	            if (result){
-	                //success
-	            	response.sendRedirect("login.jsp"); 
+	                
+	            	request.getRequestDispatcher("success.jsp").forward(request, response);
 	
 	                
 	            }else{
 	                // error
-	            	response.sendRedirect("register.jsp"); 
+	            	request.getRequestDispatcher("register.jsp").forward(request, response);
 	            }
 	        }else if(x==1){
-	            //user already exists
-	        	response.sendRedirect("register.jsp"); 
+	        	request.setAttribute("error", error);
+	        	request.getRequestDispatcher("register.jsp").forward(request, response); 
 	        }else{
 	            //error while checking
 	        	response.sendRedirect("register.jsp"); 

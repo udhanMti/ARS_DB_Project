@@ -12,46 +12,56 @@ public class DBoperation {
     PreparedStatement pst=null;
     ResultSet rs;
     
-    public boolean check_for_admin_user(String uname,String pw) {
+    public boolean checkforadminlogin(String uname,String pw) {
     	try {
-    		System.out.println("in db operation class");
+    		//System.out.println("in db operation class");
 			con = (Connection)DriverManager.getConnection(url, username, password);
-			String query= "select * from admin where username=? and password=?";
+			String query= "select * from user where username=? and password=? and user_category_id=?";
 	        pst =(PreparedStatement)con.prepareStatement(query);
 	        pst.setString(1, uname);
 	        pst.setString(2, pw);
+	        pst.setString(3, "0");
 	        rs=pst.executeQuery();
 	    
 	        while(rs.next()) {
 	        	return true;
 	        }
 	        
+	        Login.error="Invalid username or password!";
+	        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Login.error="Error occured!";
 		}
         
     	return false;
     }
     
     
-    public boolean checkforuser(String uname,String pw) {
+   public boolean checkforuserlogin(String uname,String pw) {
     	try {
-    		System.out.println("in db operation class");
+    		//System.out.println("in db operation class");
 			con = (Connection)DriverManager.getConnection(url, username, password);
-			String query= "select * from user where username=? and password=?";
+			String query= "select * from user where username=? and password=? and (user_category_id=? or user_category_id=?)";
 	        pst =(PreparedStatement)con.prepareStatement(query);
 	        pst.setString(1, uname);
 	        pst.setString(2, pw);
+	        pst.setString(3, "1");
+	        pst.setString(4, "2");
 	        rs=pst.executeQuery();
 	    
 	        while(rs.next()) {
+	        	
 	        	return true;
 	        }
+	        
+	        Login.error="Invalid username or password!";
 	        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println(e);
+			Login.error="Error occured!";
 			e.printStackTrace();
 		}
         
@@ -115,10 +125,15 @@ public class DBoperation {
             
             pst.executeUpdate();
             
+            Register.error="";
+            
             return true;
             
         }catch(Exception e){
             System.out.println(e);
+            
+            Register.error=e.getMessage().substring(33,e.getMessage().length()-16);
+            System.out.println(Register.error);
             
             return false;
         }finally{
@@ -147,6 +162,7 @@ public class DBoperation {
             
             while(rs.next()){
                 if(em.getUsername().equals(rs.getString(1))){
+                	 Register.error="username already exists!!!";
                      return 1;
                 }
             }

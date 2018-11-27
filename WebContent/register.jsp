@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,6 +33,11 @@
     
 	<form action="register" method="post">
 		
+		  <c:if test = "${error.length()>0}">
+		  	<div class="alert alert-danger">
+         	 <c:out value = "${error}"/><p>
+         	 </div>
+      	  </c:if>
         
         <div class="form-group">
 	    	<label for="fname" >First name :</label>
@@ -69,6 +78,10 @@
 		    <label for="pwd">Password:</label>
 		    <input type="password" class="form-control" id="pwd" name="pw">
 		  </div>
+		  
+		  
+		  
+      	  
 		  
 		  
 	  	<button type="submit" class="btn btn-default">Register</button>
