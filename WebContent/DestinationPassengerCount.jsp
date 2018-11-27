@@ -6,11 +6,10 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
-<body>
-     <form action="login" method="post">
-        Username<input type="text" name="username"></br>
-        Password<input type="password" name="password"></br>
-        <input type="submit">
-     </form>
+<body bgcolor="gray">
+<div align="center">
+<h3>Count of passengers traveled to ${destination} between ${from} and ${to}</h3>
+<h1>${passenger_count}</h1>
+</div>
 </body>
 </html>

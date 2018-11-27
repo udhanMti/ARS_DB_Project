@@ -1,9 +1,16 @@
 
-public class PastFlight {
+public class Flight {
 	private String flight_id;
     private String schedule_id;
     private String passenger_count;
     private String date;
+    private String airplane_id;
+	public String getAirplane_id() {
+		return airplane_id;
+	}
+	public void setAirplane_id(String airplane_id) {
+		this.airplane_id = airplane_id;
+	}
 	public String getFlight_id() {
 		return flight_id;
 	}
