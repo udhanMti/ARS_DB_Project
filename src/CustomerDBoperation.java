@@ -283,9 +283,13 @@ public class CustomerDBoperation {
 	        pstInsert.executeUpdate();
 	        
 	        
-	        String query1= "select type from schedule inner join plane_seats using(airplane_id) where schedule_id=? and seat_no=?";
+	        //String query1= "select type from schedule inner join plane_seats using(airplane_id) where schedule_id=? and seat_no=?";
+	        String query1="Select get_seat_type(?, ?)";
+	     
+	        
 	        PreparedStatement psttype =(PreparedStatement)con.prepareStatement(query1);
 	        psttype.setString(1, schedule_id);
+	        psttype.setInt(2, Integer.parseInt(seat_no));
 	        
 	        rs = pstSelect.executeQuery();
 	        
@@ -296,6 +300,9 @@ public class CustomerDBoperation {
 	            type=rs.getString(1);
 	            
 	        }
+	        
+	        
+	        System.out.println(type);
 	        
 	        if(type.equals("Economy")) {
 	       	 String updatequery="update schedule set booked_seats_econ=booked_seats_econ+1  where schedule_id=?";
@@ -405,17 +412,22 @@ public class CustomerDBoperation {
          Price em=new Price();
          con = (Connection)DriverManager.getConnection(url, username, password);
         
-         String query= "select econ_price,business_price,platinum_price from schedule left join price using(price_id) where schedule_id="+sheduleid;
-         pst =(PreparedStatement)con.prepareStatement(query);
+        // String query= "select econ_price,business_price,platinum_price from schedule left join price using(price_id) where schedule_id="+sheduleid;
+         
         // pst.setString(1,ss.getSheduleid());
+         
+         String query="select price from schedule left join price using(price_id) where schedule_id=? order by type";
+         pst =(PreparedStatement)con.prepareStatement(query);
+         
+         pst.setString(1, sheduleid);
          
          rs = pst.executeQuery();
          
          while(rs.next()){
              
              
-             em.setEcon_price(rs.getFloat(1));
-             em.setBusiness_price(rs.getFloat(2));
+             em.setEcon_price(rs.getFloat(2));
+             em.setBusiness_price(rs.getFloat(1));
              em.setPlatinum_price(rs.getFloat(3));
              
              
