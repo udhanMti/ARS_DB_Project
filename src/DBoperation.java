@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class DBoperation {
 	String url = "jdbc:mysql://localhost:3307/airlinereservationsys";
     String password="";
-    String username = "root";
+    String username = "admin";
     Connection con =null;
     PreparedStatement pst=null;
     ResultSet rs;

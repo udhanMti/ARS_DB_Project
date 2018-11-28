@@ -416,22 +416,28 @@ public class CustomerDBoperation {
          
         // pst.setString(1,ss.getSheduleid());
          
-         String query="select price from schedule left join price using(price_id) where schedule_id=? order by type";
+         String query="select price from schedule left join price using(price_id) where schedule_id=? order by price_type";
          pst =(PreparedStatement)con.prepareStatement(query);
          
          pst.setString(1, sheduleid);
          
          rs = pst.executeQuery();
          
+         float [] a= new float[3];
+         int i=0;
+         
          while(rs.next()){
              
+             a[i]=rs.getFloat(1);
+             i=i+1;
              
-             em.setEcon_price(rs.getFloat(2));
-             em.setBusiness_price(rs.getFloat(1));
-             em.setPlatinum_price(rs.getFloat(3));
              
              
          }
+         
+         em.setEcon_price(a[1]);
+         em.setBusiness_price(a[0]);
+         em.setPlatinum_price(a[2]);
          
          return em;
          
