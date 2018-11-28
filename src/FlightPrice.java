@@ -17,10 +17,14 @@ public class FlightPrice extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  String checkboxgroup=request.getParameter("checkboxgroup");
 		  
+
+		  HttpSession session=request.getSession();
+		  session.setAttribute("schedule_id", checkboxgroup);
+		  
 		  if (request.getParameter("button1") != null) {
 			  Price p = db.getPrices(checkboxgroup);
 			  
-			  HttpSession session=request.getSession();
+			  
 			  String uname= session.getAttribute("username").toString();
 			  
 			  double discount=db.getDiscount(uname);
@@ -29,6 +33,17 @@ public class FlightPrice extends HttpServlet {
 			  request.setAttribute("discount", discount);
 			  request.getRequestDispatcher("price.jsp").forward(request, response);
 	      }else {
+	    	  
+	    	 // System.out.println("jjjj");
+	    	  ArrayList<Seat> seat = db.getavailableseat(checkboxgroup);
+	    	  request.setAttribute("seat", seat);
+	    	  
+	    	  
+			  
+			 //System.out.println(seat);
+			  
+			  request.getRequestDispatcher("booking.jsp").forward(request, response);
+	    	  
 	    	  
 	      }
 		  

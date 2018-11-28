@@ -2,7 +2,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpSession;
 
 public class DBoperation {
 	String url = "jdbc:mysql://localhost:3307/airlinereservationsys";
@@ -15,6 +18,9 @@ public class DBoperation {
     public boolean checkforadminlogin(String uname,String pw) {
     	try {
     		//System.out.println("in db operation class");
+    		
+    		
+    		
 			con = (Connection)DriverManager.getConnection(url, username, password);
 			String query= "select * from user where username=? and password=? and user_category_id=?";
 	        pst =(PreparedStatement)con.prepareStatement(query);
@@ -102,7 +108,7 @@ public class DBoperation {
     
     
     public boolean addUser(user em){
-        System.out.println(em.getFirstname()+" "+em.getFirstname().length());
+        //System.out.println(em.getFirstname()+" "+em.getFirstname().length());
         try{
            
             con = (Connection)DriverManager.getConnection(url, username, password);
@@ -197,7 +203,7 @@ public class DBoperation {
            
             con = (Connection)DriverManager.getConnection(url, username, password);
            
-            String query= "select  date,flight_id,airplane_id,b.name,c.name,departure_time,new_departure_time,schedule_id from schedule left join delay using (delay_id)  left join flight using(flight_id) left join route using (route_id),airport as b, airport as c where b.airport_code= from_port_id and c.airport_code = to_port_id";
+            String query= "select  date,flight_id,airplane_id,b.name,c.name,departure_time,new_departure_time,schedule_id from schedule left join delay using (delay_id)  left join flight using(flight_id) left join route using (route_id),airport as b, airport as c where b.airport_code= from_port_id and c.airport_code = to_port_id and date>=date(now())";
             
             pst =(PreparedStatement)con.prepareStatement(query);
             
@@ -293,9 +299,9 @@ public class DBoperation {
          
          con = (Connection)DriverManager.getConnection(url, username, password);
         
-         String query= "select discount from user left join user_category on user.user_category_id=user_category.category_id where username="+uname;
+         String query= "select discount from user left join user_category on user.user_category_id=user_category.category_id where username=?";
          pst =(PreparedStatement)con.prepareStatement(query);
-        // pst.setString(1,ss.getSheduleid());
+         pst.setString(1,uname);
          
          rs = pst.executeQuery();
          
@@ -311,6 +317,172 @@ public class DBoperation {
          System.out.println(e);
          return 0.5;
         
+     }finally{
+         try{
+             if(pst != null){
+                 pst.close();
+             }
+             if (con != null){
+                 con.close();
+             }
+         }catch(Exception e){
+         
+         }
+     }
+	 
+ }
+ 
+ 
+ public ArrayList<Seat> getavailableseat(String sheduleid) {
+	 ArrayList<Seat> list=new ArrayList<Seat>();
+     
+     try{
+        
+         con = (Connection)DriverManager.getConnection(url, username, password);
+         
+         //System.out.println(sheduleid);
+         String query= "select seat_no,type from (schedule  inner join airplane using(airplane_id)) inner join plane_seats using(airplane_id) where schedule_id=? and seat_no not in (select seat_no from booking where schedule_id=?)";
+         
+         pst =(PreparedStatement)con.prepareStatement(query);
+         pst.setString(1,sheduleid);
+         pst.setString(2,sheduleid);
+         
+         rs = pst.executeQuery();
+         
+         while(rs.next()){
+             
+             Seat em = new Seat();
+             em.setName(rs.getString(1));
+             em.setType(rs.getString(2));
+             
+            // System.out.println(11111);
+             list.add(em);
+             
+         }
+         
+         return list;
+         
+     }catch(Exception e){
+         System.out.println(e);
+         
+         return null;
+     }finally{
+         try{
+             if(pst != null){
+                 pst.close();
+             }
+             if (con != null){
+                 con.close();
+             }
+         }catch(Exception e){
+         
+         }
+     }
+ }
+ 
+ 
+ public boolean bookSeat(String schedule_id,String seat_no,String uname) throws SQLException {
+	 try{
+         
+         con = (Connection)DriverManager.getConnection(url, username, password);
+         
+         con.setAutoCommit(false);
+         
+         String selectquery="select user_id from user where username=?";
+         
+         PreparedStatement pstSelect =(PreparedStatement)con.prepareStatement(selectquery);
+         pstSelect.setString(1,uname);
+         
+         rs = pstSelect.executeQuery();
+         
+         int user_id=0;
+         
+         while(rs.next()){
+             
+             user_id=Integer.parseInt(rs.getString(1));
+             
+         }
+         //booked_seats_business=booked_seats_business+1,booked_seats_platinum=booked_seats_platinum+1
+         
+         
+         
+         String insertquery= "INSERT INTO booking (user_id,schedule_id,payment_status,seat_no) values (?,?,?,?)";
+         
+         
+         PreparedStatement pstInsert =(PreparedStatement)con.prepareStatement(insertquery);
+         
+         
+         
+         
+         pstInsert.setInt(1,user_id);
+         pstInsert.setString(2,schedule_id);
+         pstInsert.setBoolean(3,false);
+         pstInsert.setInt(4,Integer.parseInt(seat_no));
+         
+         
+         
+         pstInsert.executeUpdate();
+         
+         
+         String query1= "select type from schedule inner join plane_seats using(airplane_id) where schedule_id=? and seat_no=?";
+         PreparedStatement psttype =(PreparedStatement)con.prepareStatement(query1);
+         psttype.setString(1, schedule_id);
+         
+         rs = pstSelect.executeQuery();
+         
+         String type="";
+         
+         while(rs.next()){
+             
+             type=rs.getString(1);
+             
+         }
+         
+         if(type.equals("Economy")) {
+        	 String updatequery="update schedule set booked_seats_econ=booked_seats_econ+1  where schedule_id=?";
+             PreparedStatement pstUpdate =(PreparedStatement)con.prepareStatement(updatequery);
+             
+             
+             pstUpdate.setString(1, schedule_id);
+             pstUpdate.executeUpdate();
+         }else if(type.equals("Platinum")) {
+        	 
+        	 String updatequery="update schedule set booked_seats_platinum=booked_seats_platinum+1  where schedule_id=?";
+             PreparedStatement pstUpdate =(PreparedStatement)con.prepareStatement(updatequery);
+             
+             
+             pstUpdate.setString(1, schedule_id);
+             pstUpdate.executeUpdate();
+         }else {
+        	 
+        	 String updatequery="update schedule set booked_seats_business=booked_seats_business+1  where schedule_id=?";
+             PreparedStatement pstUpdate =(PreparedStatement)con.prepareStatement(updatequery);
+             
+             
+             pstUpdate.setString(1, schedule_id);
+             pstUpdate.executeUpdate();
+         }
+         
+         
+         
+        
+         
+         
+         
+         con.commit();
+         
+         
+         
+         
+         
+         return true;
+         
+     }catch(Exception e){
+         System.out.println(e);
+         Booking.error=e.getMessage();
+         
+         con.rollback();
+         return false;
      }finally{
          try{
              if(pst != null){

@@ -20,7 +20,7 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<title>Insert title here</title>
+<title>Airline System</title>
 </head>
 <body>
   <h3>Shedule Table</h3>

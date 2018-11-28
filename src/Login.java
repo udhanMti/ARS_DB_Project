@@ -35,6 +35,7 @@ public class Login extends HttpServlet {
 			  
 			  if(isValid) {
 				  session.setAttribute("username", username);
+				  //session.setAttribute("usertype", "customer");
 				  
 				  ArrayList<Shedule> list= db.getShedule();
 				  session.setAttribute("shedule",list);
@@ -53,6 +54,7 @@ public class Login extends HttpServlet {
 			  
 			  if(isValid) {
 				  session.setAttribute("username", username);
+				  //session.setAttribute("usertype", "admin");
 				  
 				  
 				  Login.error="";
