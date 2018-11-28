@@ -56,6 +56,12 @@ public class Login extends HttpServlet {
 				  
 				  
 				  Login.error="";
+				  
+				  
+				  ArrayList<String> port_list= db.getPortList();
+				  ArrayList<String> flight_list= db.getFlightList();
+				  session.setAttribute("port_list",port_list);
+				  session.setAttribute("flight_list",flight_list);
 				  response.sendRedirect("admin_home.jsp" );
 				  
 				  

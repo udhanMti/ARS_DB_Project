@@ -1,53 +1,118 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ page import="java.util.ArrayList" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <title>Admin Home Page</title>
 </head>
-<body bgcolor="gray">
-   <div style="width:1500px; background:yellow">
-   <h4 align="center">Given origin and destination, all past flights,states,passenger counts data</h4>
-   <form action="scheduleHistory" method="post" align="center">
-   Origin<input type="text" name="from_port" required><br/></br>
-   Destination<input type="text" name="to_port" required></br></br>
-   <input type="submit" value="check">
+<body>
+   
+  
+   <h4>Given origin and destination, all past flights,states,passenger counts data</h4>
+   <form action="scheduleHistory" method="post" class="form-inline">
+   <div class="form-group">
+   <label>Origin :</label><select name="from_port" class="form-control"> 
+   <c:forEach var="port" items="${port_list}">
+          <option value="${port}">${port}</option>
+     </c:forEach>     
+   </select> 
+   </div>
+   <div class="form-group">
+   <label >Destination :</label><select name="to_port" class="form-control"> 
+   <c:forEach var="port" items="${port_list}">
+          <option value="${port}">${port}</option>
+     </c:forEach>     
+   </select> 
+   
+   <button class="btn btn-default" type="submit">Check</button>
+   </div></form>
+  
+   </br>
+   <hr style="display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;"></br>
+  
+   <h4 >Given a flight no, all passengers traveling in it(next immediate flight) below age 18, above age 18</h4>
+   <form action="flight_passenger_info" method="post" class="form-inline">
+   <div class="form-group">
+   <label >Flight Id</label><select name="flight_id" class="form-control"> 
+   <c:forEach var="flight" items="${flight_list}">
+          <option value="${flight}">${flight}</option>
+     </c:forEach>     
+   </select> 
+   </div>
+   <button class="btn btn-default" type="submit">Check</button>
    </form>
    </div>
    
-   <div style="width:1500px; background:pink">
-   <h4 align="center">Given a flight no, all passengers traveling in it(next immediate flight) below age 18, above age 18</h4>
-   <form action="flight_passenger_info" method="post" align="center">
-   Flight Id<input type="text" name="flight_id"><br/></br>
-   <input type="submit" value="check">
+    </br>
+   <hr style="display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;"></br>
+  
+   <h4 >Given a date range, number of passengers traveling to a given destination</h4>
+   <form action="destination_passenger_info" method="post" class="form-inline" >
+   
+   <div class="form-group"><label>From date</label><input type="date" name="from_date" required class="form-control"></div>
+   <div class="form-group"><label>To date</label><input type="date" name="to_date" required class="form-control"></div>
+   <div class="form-group"><label>Destination</label><select name="destination" class="form-control"> 
+   <c:forEach var="port" items="${port_list}">
+          <option value="${port}">${port}</option>
+     </c:forEach>     
+   </select> </div>
+   <button class="btn btn-default" type="submit">Check</button>
    </form>
-   </div>
    
-   
-   <div style="width:1500px; background:orange">
-   <h4 align="center">Given a date range, number of passengers traveling to a given destination</h4>
-   <form action="destination_passenger_info" method="post" align="center">
-   From date<input type="date" name="from_date" required><br/></br>
-   To date<input type="date" name="to_date" required><br/></br>
-   Destination<input type="text" name="destination" required><br/></br>
-   <input type="submit" value="check">
+    </br>
+   <hr style="display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;"></br>
+  
+   <h4 >Given a date range, number of bookings by each passenger type</h4>
+   <form action="passenger_type_count" method="post" class="form-inline">
+   <div class="form-group"><label>From date</label><input type="date" name="from_date_2" required class="form-control"></div>
+   <div class="form-group"><label>To date</label><input type="date" name="to_date_2" required class="form-control"></div>
+   <button class="btn btn-default" type="submit">Check</button>
    </form>
-   </div>
+  
+    </br>
+   <hr style="display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;"></br>
    
-   <div style="width:1500px; background:purple">
-   <h4 align="center">Given a date range, number of bookings by each passenger type</h4>
-   <form action="passenger_type_count" method="post" align="center">
-   From date<input type="date" name="from_date_2" required><br/></br>
-   To date<input type="date" name="to_date_2" required><br/></br>
-   <input type="submit" value="check">
-   </form>
-   </div>
    
-   <div style="width:1500px; background:blue">
-   <h4 align="center">Total revenue generated by each aircraft type</h4>  
-   <form action="total_revenue_aircraft" method="post" align="center">
-   <input type="submit" value="check">
-   </div>
+   <h4 >Total revenue generated by each aircraft type</h4>  
+   <form action="total_revenue_aircraft" method="post" class="form-inline">
+   <button class="btn btn-default" type="submit">Check</button>
+  
 </body>
 </html>
