@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/register")
 
 public class Register  extends HttpServlet{
-	DBoperation db= new DBoperation();
+	CustomerDBoperation db= new CustomerDBoperation();
 	public static String error;
 	
 	

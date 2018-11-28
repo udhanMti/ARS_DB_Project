@@ -17,7 +17,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet("/login")
 public class Login extends HttpServlet {
-	DBoperation db= new DBoperation();
+	CustomerDBoperation db= new CustomerDBoperation();
+	DBoperation db1=new DBoperation();
 	
 	public static String error;
 	
@@ -50,7 +51,7 @@ public class Login extends HttpServlet {
 			  }	
 			  
 		  }else {
-			  Boolean isValid=db.checkforadminlogin(username, password);
+			  Boolean isValid=db1.checkforadminlogin(username, password);
 			  
 			  if(isValid) {
 				  session.setAttribute("username", username);
@@ -60,8 +61,8 @@ public class Login extends HttpServlet {
 				  Login.error="";
 				  
 				  
-				  ArrayList<String> port_list= db.getPortList();
-				  ArrayList<String> flight_list= db.getFlightList();
+				  ArrayList<String> port_list= db1.getPortList();
+				  ArrayList<String> flight_list= db1.getFlightList();
 				  session.setAttribute("port_list",port_list);
 				  session.setAttribute("flight_list",flight_list);
 				  response.sendRedirect("admin_home.jsp" );

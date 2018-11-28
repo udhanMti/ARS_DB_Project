@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/booking")
 
 public class Booking extends HttpServlet{
-		DBoperation db= new DBoperation();
+		CustomerDBoperation db= new CustomerDBoperation();
 		
 		public static String error;
 	

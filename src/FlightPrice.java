@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 public class FlightPrice extends HttpServlet {
 	
-	DBoperation db= new DBoperation();
+	CustomerDBoperation db= new CustomerDBoperation();
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		  String checkboxgroup=request.getParameter("checkboxgroup");
